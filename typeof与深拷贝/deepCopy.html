@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>js基础知识-深拷贝</title>
+</head>
+
+<body>
+  <script>
+    const obj1 = {
+      age: 20,
+      name: 'xxx',
+      adress: {
+        city: 'beijing'
+      },
+      arr: ['a', 'b', 'c']
+    }
+    const obj2 = obj1;
+    obj2.adress.city = 'shanghai'
+    console.log(obj1.adress.city)
+    //引用类型的数据复制属于浅拷贝
+    //深拷贝
+    function deepCopy(obj) {
+      if (typeof obj !== 'object' || obj == null) {
+        //如果obj是null，或者不是对象或数组，直接返回
+        return obj
+      }
+      //初始化返回结果
+      let result
+      if (obj instanceof Arry) {
+        result = []
+      } else {
+        result = {}
+      }
+      for (let key in obj) {
+        //保证key不是原型的属性
+        if (obj.hasOwnProperty(key)) {
+          //递归调用
+          result[key] = deepCopy(obj[key])
+
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>
