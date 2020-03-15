@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>class与继承</title>
+</head>
+
+<body>
+  <script>
+    class Student1 {
+      constructor(name, number) {
+        this.name = name
+        this.number = number
+      }
+      sayhi() {
+        console.log(
+          `姓名${this.name},学号${this.number}`
+        )
+      }
+
+    }
+    //通过类new对象/实例
+    const xialu = new Student1('xialu', 100)
+    console.log(xialu.name)
+    console.log(xialu.number)
+    xialu.sayhi()
+
+
+    // 继承
+    /*extends，super,扩展或者重写方法*/
+    //父类
+    class People {
+      constructor(name) {
+        this.name = name
+      }
+      eat() {
+        console.log(`${this.name} eat apple`)
+      }
+    }
+    //子类,只有一个子类继承是没有什么意义的
+    class Student extends People {
+      constructor(name, number) {
+        super(name)
+        this.number = number
+      }
+      sayhi() {
+        console.log(`姓名${this.name}`)
+      }
+    }
+    //子类
+    class Teacher extends People {
+      constructor(name, major) {
+        super(name)
+        this.major = major
+      }
+      teach() {
+        console.log(`王老师教语文`)
+      }
+    }
+    const wanglaoshi = new Teacher('王大傻', '语文')
+  </script>
+</body>
+
+</html>
