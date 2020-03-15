@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>原型</title>
+</head>
+
+<body>
+  <script>
+    /*class实际上是函数*/
+    /*
+    
+    */
+
+    function Foo() { };
+    let f1 = new Foo();
+
+    typeof f1;   //"object"
+    typeof Foo;  //"function"
+
+    Function.__proto__ == Function.prototype;  //true  
+    Function.__proto__ == Object.prototype;  //false
+
+    Foo.__proto__ == Function.prototype;  //true，Foo的构造函数是Function
+    Object.__proto__ == Function.prototype;  //true，Object的构造函数是Function
+
+
+    f1.constructor == Foo;  //true，f1的构造函数是Function
+    f1.__proto__ == Foo.prototype;  //true，f1的构造函数是Function
+    Foo.prototype.__proto__ == Object.prototype; //true  Foo.prototype原型对象，整体看成一个普通对象，构造函数是Object
+    Object.prototype.__proto__ == null;
+    /*instaceof的原理就是顺着实例的原型链向上查找，如果能找到响应目标就返回true*/
+  </script>
+</body>
+
+</html>
