@@ -22,7 +22,19 @@
     obj2.adress.city = 'shanghai'
     console.log(obj1.adress.city)
     //引用类型的数据复制属于浅拷贝
-    //深拷贝
+    /*
+    一、 浅拷贝
+    对于浅拷贝而言，就是只拷贝对象的引用，而不深层次的拷贝对象的值，
+    多个对象指向堆内存中的同一对象，任何一个修改都会使得所有对象的值修改，
+    因为它们公用一条数据.
+    */
+    /*
+    深拷贝作用在引用类型上！例如：Object，Array
+    深拷贝不会拷贝引用类型的引用，而是将引用类型的值全部拷贝一份，
+    形成一个新的引用类型，这样就不会发生引用错乱的问题，使得我们可以
+    多次使用同样的数据，而不用担心数据之间会起冲突。
+    */
+    /**/
     function deepCopy(obj) {
       if (typeof obj !== 'object' || obj == null) {
         //如果obj是null，或者不是对象或数组，直接返回
@@ -30,7 +42,7 @@
       }
       //初始化返回结果
       let result
-      if (obj instanceof Arry) {
+      if (obj instanceof Array) {
         result = []
       } else {
         result = {}
@@ -43,7 +55,10 @@
 
         }
       }
+      return result
     }
+    let obj3 = deepCopy(obj1);
+    console.log(obj3);
   </script>
 </body>
 
