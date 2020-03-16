@@ -26,12 +26,16 @@ PersonB.prototype = Object.create(PersonA.prototype)实现来继承PersonA的原型
 当实例化对象调用某个方法时会先在自身和原型上查找，然后是在_proto_上一层层查找，这种方式就是原型链。
 
 4.vuex
-Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式。它采用集中式存储管理应用的所有组件的状态
-并以相应的规则保证状态以一种可预测的方式发生变化。
-tate：Vuex 使用单一状态树——是的，用一个对象就包含了全部的应用层级状态。
-mutation：更改 Vuex 的 store 中的状态的唯一方法是提交 mutation
-action: action 提交的是 mutation，而不是直接变更状态。action 可以包含任意异步操作。
-getter: 相当于Vue中的computed计算属性
+1、state
+保存vuex中的数据源，通过this.$store.state获取 
+2、getters
+用于监听state中的值的变化，返回计算后的结果。getter的返回值会根据它的依赖被缓存起来
+3、mutations
+是修改store中的值得唯一方式
+4、action 
+官方建议提交一个actions，在actions中提交mutations再去修改状态值。 this.$store.dispatch('add')
+//this.$store.commit('add')
+5、modules 模块化
 
 5.vue-router
 Vue Router 是 Vue.js 官方的路由管理器。它和 Vue.js 的核心深度集成，让构建单页面应用变得易如反掌
@@ -299,29 +303,17 @@ js语言是弱语言类型， 因此我们在项目开发中当我们随意更该某个变量的数据类型后
 Element-UI Vant
 
 21.说一说什么是跨域，怎么解决
+一：DOM同源策略：禁止对不同源页面的DOM进行操作，主要是不同域名的ifram是限制互相访问的
+二：xmlHttpRequest同源策略：禁止使用XHR对象向不同源的服务器地址发起http请求，只要域名  协议  端口有一个不同都被当做不同的域之间的请求，即跨域请求
+解决方式：
+1、CORS跨域资源共享   后端需要设置Access--Control-Allow-Credentials:true
+2、jsonp实现跨域：动态创建script，利用src属性进行跨域
+3、 nginx代理跨域
+4、nodejs中间件代理跨域
+5、WebSokect协跨域
+6、window.name+ifram跨域
 因为浏览器出于安全考虑，有同源策略。也就是说，如果协议、域名或者端口有一个不同就是跨域，Ajax 请求会失败。
 为来防止CSRF攻击
-1.JSONP
-    JSONP 的原理很简单，就是利用 <script> 标签没有跨域限制的漏洞。
-    通过 <script> 标签指向一个需要访问的地址并提供一个回调函数来接收数据当需要通讯时。
-    <script src="http://domain/api?param1=a&param2=b&callback=jsonp"></script>
-    <script>
-        function jsonp(data) {
-        	console.log(data)
-    	}
-    </script>
-    JSONP 使用简单且兼容性不错，但是只限于 get 请求。
-2.CORS
-    CORS 需要浏览器和后端同时支持。IE 8 和 9 需要通过 XDomainRequest 来实现。
-3.document.domain
-    该方式只能用于二级域名相同的情况下，比如 a.test.com 和 b.test.com 适用于该方式。
-
-    只需要给页面添加 document.domain = 'test.com' 表示二级域名都相同就可以实现跨域
-4.webpack配置proxyTable设置开发环境跨域
-5.nginx代理跨域
-6.iframe跨域
-7.postMessage
-    这种方式通常用于获取嵌入页面中的第三方页面数据。一个页面发送消息，另一个页面判断来源并接收消息
 
 22.说一说前端性能优化方案
 三个方面来说明前端性能优化
@@ -380,3 +372,132 @@ Push Cache
     
     协商缓存，Last-Modified 是一个时间戳，如果我们启用了协商缓存，它会在首次请求时随着 Response Headers 返回：每次请求去判断这个时间戳是否发生变化。
     从而去决定你是304读取缓存还是给你返回最新的数据
+
+27.link和@inmport的区别
+1、link是html的标签，不仅可以加载css还可以定义Rss , rel连接属性；@import是css的语法规则，只能引入样式；
+2、加载页面时，link是同时加载的，@impor是页面加载完后才加载
+3、link没有兼容性的问题，而@import只在较高版本的浏览器才可以识别
+4、link可以通过js插入操作dom，@import 不可以！
+
+28.如何理解js中的原型链
+1；每个构造函数都有一个原型对象
+2；每个原型对象都有一个指向构造函数的指针
+3；每个实例函数都有一个指向原型对象的指针。
+4；查找方式是一层一层查找，直至顶层。Object.prototype
+
+29.怎么理解js中的内存泄露
+定义：程序不需要的内存，由于某些原因其不会返回到操作系统或者可用内存池中。   内存泄露会导致（运行缓慢 ，高延迟，崩溃）的问题
+常见的导致内存泄露的原因有：
+1；意外的全局变量
+2；被遗忘的计时器或回调函数
+3；脱离文档的DOM的引用
+4；闭包
+
+30.vue的生命周期
+Vue 实例有一个完整的生命周期，也就是从开始创建、初始化数据、编译模板、挂载Dom→渲染、更新→渲染、卸载等一系列过程，我们称这是 Vue 的生命周期。通俗说就是 Vue 实例从创建到销毁的过程，就是生命周期。
+beforeCreate: vue元素的挂载元素el和数据都为undefined，还未初始化；
+created：vue实例的数据对象data有了，el还没有；
+beforeMount：vue实例的$el和data都初始化了，但是还挂载在之前的虚拟dom节点上，data.message还未替换；
+mounted：vue实例挂载完成，data.message成功渲染。
+更新前后：data变化时会触发beforeUpdate和updated方法；
+销毁前后：beforeDestory和destoryed，在执行destoryed方法后，对data的改变不会触发周期函数，说明vue实例已经解除了事件监听以及dom绑定，但是dom结构依然存在；
+vue生命周期的作用：
+他的生命周期中有多个事件钩子，让我们控制整个vue实例的过程时更容易形成良好的逻辑。
+生命周期钩子的一些使用方法：
+beforeCreate：loading事件，在加载实例时触发。
+created：初始化完成事件，异步请求。
+mounted：挂载元素，获取dom节点
+uptaded：对数据统一处理
+beforeDestory：确认事件停止。
+nextTick：更新数据后立即操作dom。
+
+31.computed和watch的区别
+computed
+计算结果并返回，只有当被计算的属性发生改变时才会触发（即：计算属性的结果会被缓存，除非依赖的响应属性变化才会重新及孙）
+watch
+ 监听某一个值，当被监听的值发生变化时，执行相关操作。（与computed的区别是，watch更加适用于监听某一个值得变化，并做对应操作，比如请求后太接口等。而computed适用于计算已有的值并返回结果。）
+
+监听简单数据类型：
+data(){
+      return{
+        'first':2
+      }
+    },
+    watch:{
+      first(){
+        console.log(this.first)
+      }
+    },
+
+32.json和xml数据的区别
+1、数据体积方面：xml是重量级的，json是轻量级的，传递的速度更快些。。
+2、数据传输方面：xml在传输过程中比较占带宽，json占带宽少，易于压缩。
+3、数据交互方面：json与javascript的交互更加方便，更容易解析处理，更好的进行数据交互
+4、数据描述方面：json对数据的描述性比xml较差
+5、xml和json都用在项目交互下，xml多用于做配置文件，json用于数据交互。
+
+33.http和https的区别
+
+Http：超文本传输协议（Http，HyperText Transfer Protocol)是互联网上应用最为广泛的一种网络协议。设计Http最初的目的是为了提供一种发布和接收HTML页面的方法。它可以使浏览器更加高效。Http协议是以明文方式发送信息的，如果黑客截取了Web浏览器和服务器之间的传输报文，就可以直接获得其中的信息。
+
+Https：是以安全为目标的Http通道，是Http的安全版。Https的安全基础是SSL。SSL协议位于TCP/IP协议与各种应用层协议之间，为数据通讯提供安全支持。SSL协议可分为两层：SSL记录协议（SSL Record Protocol），它建立在可靠的传输协议（如TCP）之上，为高层协议提供数据封装、压缩、加密等基本功能的支持。SSL握手协议（SSL Handshake Protocol），它建立在SSL记录协议之上，用于在实际的数据传输开始前，通讯双方进行身份认证、协商加密算法、交换加密密钥等。
+
+HTTP与HTTPS的区别
+
+1、HTTP是超文本传输协议，信息是明文传输，HTTPS是具有安全性的SSL加密传输协议。
+
+2、HTTPS协议需要ca申请证书，一般免费证书少，因而需要一定费用。
+
+3、HTTP和HTTPS使用的是完全不同的连接方式，用的端口也不一样。前者是80，后者是443。
+
+4、HTTP连接是无状态的，HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，安全性高于HTTP协议。
+
+https的优点
+
+尽管HTTPS并非绝对安全，掌握根证书的机构、掌握加密算法的组织同样可以进行中间人形式的攻击，但HTTPS仍是现行架构下最安全的解决方案，主要有以下几个好处：
+
+1）使用HTTPS协议可认证用户和服务器，确保数据发送到正确的客户机和服务器；
+
+2）HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，要比http协议安全，可防止数据在传输过程中不被窃取、改变，确保数据的完整性。
+
+3）HTTPS是现行架构下最安全的解决方案，虽然不是绝对安全，但它大幅增加了中间人攻击的成本。
+
+4）谷歌曾在2014年8月份调整搜索引擎算法，并称“比起同等HTTP网站，采用HTTPS加密的网站在搜索结果中的排名将会更高”。
+
+Https的缺点
+
+1）Https协议握手阶段比较费时，会使页面的加载时间延长近。
+
+2）Https连接缓存不如Http高效，会增加数据开销，甚至已有的安全措施也会因此而受到影响；
+
+3）SSL证书通常需要绑定IP，不能在同一IP上绑定多个域名，IPv4资源不可能支撑这个消耗。
+
+4）Https协议的加密范围也比较有限。最关键的，SSL证书的信用链体系并不安全，特别是在某些国家可以控制CA根证书的情况下，中间人攻击一样可行。
+
+34.vue router 跳转方式
+this.$router.push()
+跳转到不同的url，但这个方法会向history栈添加一个记录，点击后退会返回到上一个页面。
+ this.$router.push({path: '/home/sort/detail',query:{id: 'abc'}})     
+ 获取参数 {{this.$route.query.userId}}
+ this.$router.push({name: 'detail',params:{id: 'abc'}})
+获取参数：{{this.$route.params.userId}}
+
+query和params 的区别：
+query要用path来引入，params要用name来引入：eg
+
+this.$router.push({
+   name:"detail",
+   params:{
+    name:'nameValue',
+    code:10011
+ }
+});
+
+query更加类似于我们ajax中get传参，params则类似于post，说的再简单一点，前者在浏览器地址栏中显示参数，后者则不显示
+1、this.$router.replace()
+同样是跳转到指定的url，但是这个方法不会向history里面添加新的记录，点击返回，会跳转到上上一个页面。上一个记录是不存在的。
+2、this.$router.go(n)
+相对于当前页面向前或向后跳转多少个页面,类似 window.history.go(n)。n可为正数可为负数。正数返回上一个页面
+
+1) 根据路由路径（/home/sort/detail）跳转 <router-link :to="{path: '/home/sort/detail', query:{id: 'abc'}}">点击查看子页面</router-link>
+2) 根据路由名称（detail）跳转 <router-link :to="{name: 'detail', params:{id: 'abc'}}">点击查看子页面</router-link>    :to="" 可以实现绑定动态的 路由 和 参数
