@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const zhangsan = {
+      name: "张三",
+      sayhi() {
+        //this即当前对象
+        console.log(this)
+      },
+      wait() {
+        setTimeout(function () {//定时函数中的函数执行就相当于普通函数执行
+          console.log(this)
+        })
+      }
+      /*
+      wait() {
+        setTimeout(()=>{定时函数中的箭头函数执行this指向上一层作用域
+          console.log(this)
+        })
+      }
+      */
+    }
+  </script>
+</body>
+
+</html>

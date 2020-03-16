@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>作用域</title>
+</head>
+
+<body>
+  <script>
+    //创建10个`<a>`标签，点击的时候弹出对应的序号
+    let a
+    for (let i = 0; i < 10; i++) {
+      a = document.createElement("a")
+      a.innerHTML = i + `<br>`
+      a.addEventListener("click", function (e) {
+        e.preventDefault()
+        alert(i)
+      })
+      document.body.appendChild(a)
+    }
+    //闭包，函数作为返回值或者函数作为参数
+    //函数作为返回值
+    function fun() {
+      const ab = 100
+      return function () {
+        console.log(ab)
+      }
+    }
+    const ab = 200
+    fun() //100
+    //函数作为参数被传递
+    const c = 100
+    function fn() {
+      console.log(c)
+    }
+    function print(fn) {
+      const c = 200
+      fn()
+    }
+    print(fn)
+    //闭包：自由变量寻找的时候应该在函数定义的区域中寻找，不是在执行的地方
+    //this取什么值是在函数执行的时候确定的，不是在函数定义的时候确定的
+    function fn() {
+      console.log(this)
+    }
+    fn()//window
+    fn.call({ x: 1 })//{x:1}
+    const fn1 = fn.bind({ x: 2 })
+    fn1()//{x:2}
+  </script>
+</body>
+
+</html>
